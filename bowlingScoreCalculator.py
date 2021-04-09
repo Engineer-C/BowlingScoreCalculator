@@ -1,3 +1,6 @@
+from time import process_time
+
+
 def frame_ball_no(count):
     frame_no = count // 2 + 1
     ball_no = count % 2 + 1
@@ -116,6 +119,8 @@ def display_scoreboard(frame_no, ball_no, score, f_score):
                         line_two += ' X'
                         if score[-1] == 10:
                             line_two += ' X'
+                        else:
+                            line_two += ' ' + str(score[-1])
                     else:
                         line_two += ' ' + str(score[-2])
                         if sum(score[-2:]) == 10:
@@ -144,9 +149,12 @@ def display_scoreboard(frame_no, ball_no, score, f_score):
         print(line_four + '|     ' * diff_three, end='|\n\n')
 
 
+start = process_time()
 score_board = []
 frame_score = [False, False, False, False, False, False, False, False, False, False]
 print('<<--    GAME START    -->>')
 for ball_count in range(0, 21):
     pin_control_and_scoring(ball_count, score_board, frame_score)
 print('<<--    END OF GAME   -->>')
+end = process_time()
+print('Elapsed time:', format((end-start)*1000, '8.5f'), 'ms.')
