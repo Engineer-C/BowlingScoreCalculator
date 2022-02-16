@@ -1,3 +1,6 @@
+"""
+Bowling Score Calculator.
+"""
 from time import process_time
 
 
@@ -13,14 +16,13 @@ def frame_ball_no(count):
 def input_message(frame_no, ball_no, remaining_pins):
     import re
     while True:
-        print('<<-- Frame', frame_no, '* Ball', ball_no, '-->>')
-        message = 'Enter between 0 to ' + str(remaining_pins) + ': '
-        number_of_pins = input(message)
+        print(f'<<-- Frame {frame_no} * Ball {ball_no} -->>')
+        number_of_pins = input(f'Enter between 0 to {str(remaining_pins)}: ')
         if not number_of_pins:
             number_of_pins = 'NO INPUT'
             print(number_of_pins)
-        if re.findall(r'\b\d+\b', number_of_pins) and\
-           (0 <= int(number_of_pins) <= remaining_pins):
+        if re.findall(r'\b\d+\b', number_of_pins) \
+                and (0 <= int(number_of_pins) <= remaining_pins):
             break
         print('Wrong Input. Enter number again\n')
     return int(number_of_pins)
@@ -97,21 +99,22 @@ def display_scoreboard(frame_no, ball_no, score, f_score):
             if idx == 18:
                 f_score[9] = (sum(score[-3:]))
                 break
-            if score[idx:idx+2] == [10, False]:
+            if score[idx:idx + 2] == [10, False]:
                 frame_score_calculator(idx, score, f_score, 2)
-            elif sum(score[idx:idx+2]) == 10:
+            elif sum(score[idx:idx + 2]) == 10:
                 frame_score_calculator(idx, score, f_score, 1)
             else:
                 frame_score_calculator(idx, score, f_score, 0)
 
         for idx in range(0, frame_no):
             if idx != 9:
-                if score[2*idx] == 10:
+                if score[2 * idx] == 10:
                     line_two += '|' + str(format('X', '^5s'))
-                elif sum(score[2*idx:2*(idx+1)]) == 10:
-                    line_two += '| ' + str(score[2*idx]) + ' / '
+                elif sum(score[2 * idx:2 * (idx + 1)]) == 10:
+                    line_two += '| ' + str(score[2 * idx]) + ' / '
                 else:
-                    line_two += '| ' + str(score[2*idx]) + ' ' + str(score[2*idx+1]) + ' '
+                    line_two += '| ' + str(score[2 * idx]) \
+                                + ' ' + str(score[2 * idx + 1]) + ' '
             else:
                 if score[-3] == 10:
                     line_two += '|X'
@@ -139,10 +142,10 @@ def display_scoreboard(frame_no, ball_no, score, f_score):
                         line_two += ' ' + str(score[-2]) + '  '
             if f_score[idx] or type(f_score[idx]) == int:
                 line_three += '|' + format(f_score[idx], '^5d')
-                line_four += '|' + format(sum(f_score[:idx+1]), '^5d')
+                line_four += '|' + format(sum(f_score[:idx + 1]), '^5d')
 
-        diff_two = (len(line_one) - len(line_two))//6
-        diff_three = (len(line_one) - len(line_three))//6
+        diff_two = (len(line_one) - len(line_two)) // 6
+        diff_three = (len(line_one) - len(line_three)) // 6
         print(line_one, end='|\n')
         print(line_two + '|     ' * diff_two, end='|\n')
         print(line_three + '|     ' * diff_three, end='|\n')
@@ -150,11 +153,11 @@ def display_scoreboard(frame_no, ball_no, score, f_score):
 
 
 start = process_time()
-score_board = []
-frame_score = [False, False, False, False, False, False, False, False, False, False]
+score_board = list()
+frame_score = [False for _ in range(10)]
 print('<<--    GAME START    -->>')
-for ball_count in range(0, 21):
+for ball_count in range(21):
     pin_control_and_scoring(ball_count, score_board, frame_score)
 print('<<--    END OF GAME   -->>')
 end = process_time()
-print('Elapsed time:', format((end-start)*1000, '8.5f'), 'ms.')
+print(f'Elapsed time: {(end - start) * 1000:8.5f}ms.')
