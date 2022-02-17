@@ -1,10 +1,14 @@
-"""
-Bowling Score Calculator.
+"""Bowling Score Calculator.
+
+Only the python standard libraries are used.
+Implementing 1-D list.
 """
 from time import process_time
+from typing import Tuple
+import re
 
 
-def frame_ball_no(count):
+def frame_ball_no(count: int) -> Tuple[int, int]:
     frame_no = count // 2 + 1
     ball_no = count % 2 + 1
     if count == 20:
@@ -13,8 +17,7 @@ def frame_ball_no(count):
     return frame_no, ball_no
 
 
-def input_message(frame_no, ball_no, remaining_pins):
-    import re
+def input_message(frame_no: int, ball_no: int, remaining_pins: int) -> int:
     while True:
         print(f'<<-- Frame {frame_no} * Ball {ball_no} -->>')
         number_of_pins = input(f'Enter between 0 to {str(remaining_pins)}: ')
@@ -28,23 +31,23 @@ def input_message(frame_no, ball_no, remaining_pins):
     return int(number_of_pins)
 
 
-def reset_pin(frame_no, ball_no, score):
+def reset_pin(frame_no: int, ball_no: int, score: list) -> list:
     score.append(input_message(frame_no, ball_no, 10))
     return score
 
 
-def throw_again(frame_no, ball_no, score):
+def throw_again(frame_no: int, ball_no: int, score: list) -> list:
     remaining_pins = 10 - score[-1]
     score.append(input_message(frame_no, ball_no, remaining_pins))
     return score
 
 
-def ball_not_thrown(score):
+def ball_not_thrown(score: list) -> list:
     score.append(False)
     return score
 
 
-def pin_control_and_scoring(count, score, f_score):
+def pin_control_and_scoring(count: int, score: list, f_score: list) -> None:
     frame_no, ball_no = frame_ball_no(count)
     if frame_no < 10:
         if ball_no != 1 and (score[-1] == 10):
@@ -71,7 +74,8 @@ def pin_control_and_scoring(count, score, f_score):
     display_scoreboard(frame_no, ball_no, score, f_score)
 
 
-def frame_score_calculator(idx, score, f_score, bonus_count):
+def frame_score_calculator(idx: int, score: list, f_score: list,
+                           bonus_count: int) -> None:
     count = 0
     step = 2
     bonus = 0
@@ -84,7 +88,8 @@ def frame_score_calculator(idx, score, f_score, bonus_count):
         f_score[int(idx / 2)] = sum(score[idx:idx + 2]) + bonus
 
 
-def display_scoreboard(frame_no, ball_no, score, f_score):
+def display_scoreboard(frame_no: int, ball_no: int,
+                       score: list, f_score: list) -> None:
     if (frame_no < 10 and ball_no == 2) or ball_no == 3:
         print('\nSCORE BOARD')
         line_one = '   Frame    '
@@ -157,7 +162,7 @@ score_board = list()
 frame_score = [False for _ in range(10)]
 print('<<--    GAME START    -->>')
 for ball_count in range(21):
-    pin_control_and_scoring(ball_count, score_board, frame_score)
+    pin_control_and_scoring(count=ball_count,
+                            score=score_board, f_score=frame_score)
 print('<<--    END OF GAME   -->>')
-end = process_time()
-print(f'Elapsed time: {(end - start) * 1000:8.5f}ms.')
+print(f'Elapsed time: {(process_time() - start) * 1000:.5f}ms.')
